@@ -1,0 +1,43 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Register from "./Register";
+import Login from "./Login";
+import UsersPage from "./UserPage";
+import CloudDashboard from "./CloudDashboard";
+import Plans from "./Plans";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <CloudDashboard />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/directory/:dirId",
+    element: <CloudDashboard />,
+  },
+  {
+    path: "/user",
+    element: <UsersPage />,
+  },
+  { path: "/plans", element: <Plans /> }, // {
+  //   path: "/dashboard",
+  //   element: <CloudDashboard />,
+  // },
+  // {
+  //   path: "/dashboard/directory/:dirId",
+  //   element: <CloudDashboard />,
+  // },
+]);
+
+function App() {
+  return <RouterProvider router={router} />;
+}
+
+export default App;
