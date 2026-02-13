@@ -4,7 +4,7 @@ export function openDrivePicker({ accessToken, onPick }) {
       .addView(window.google.picker.ViewId.DOCS)
       .addView(window.google.picker.ViewId.FOLDERS)
       .setOAuthToken(accessToken)
-      .setDeveloperKey("AIzaSyCfHjwXydxQByf08OfxgRe771c-zksuHgE")
+      .setDeveloperKey(import.meta.VITE_GOOGLE_API_KEY)
       .setCallback(onPick)
       .build();
 
