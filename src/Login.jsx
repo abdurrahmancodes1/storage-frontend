@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(formData).unwrap();
-      navigate("/");
+      navigate("/dashboard");
       setServerError(error);
     } catch (error) {
       console.log("Login Failed", error);
