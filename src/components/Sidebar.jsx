@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ImportFromDrive from "./ImportFromDrive";
 import Button from "../components/ui/Button";
 import { cn } from "@/lib/utils";
-import ProgressBar from "./ui/Progressbar";
+import ProgressBar from "..components/ui/Progressbar";
 export default function Sidebar({
   isSidebarOpen,
   fileInputRef,

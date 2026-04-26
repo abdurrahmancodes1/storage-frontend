@@ -15,7 +15,7 @@ import Button from "../components/ui/Button";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import ProgressBar from "./ui/Progressbar";
+import ProgressBar from "./ui/ProgressBar";
 const FileIcon = ({ name, isDirectory, className }) => {
   // Folder first (same behavior as before)
   if (isDirectory) {

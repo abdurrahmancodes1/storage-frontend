@@ -3,7 +3,7 @@ import { Cloud, Plus, HardDrive, Share2, Star, Trash2 } from "lucide-react";
 import ImportFromDrive from "@/components/ImportFromDrive";
 import { cn } from "@/lib/utils";
 import Button from "../components/ui/Button";
-import ProgressBar from "@/components/ui/Progressbar";
+import ProgressBar from "../components/ui/ProgressBar";
 
 export default function Sidebar({
   isSidebarOpen,
