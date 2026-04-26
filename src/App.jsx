@@ -4,10 +4,15 @@ import Login from "./Login";
 import UsersPage from "./UserPage";
 import CloudDashboard from "./CloudDashboard";
 import Plans from "./Plans";
+import Homepage from "./Homepage";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Homepage />,
+  },
+  {
+    path: "/dashboard",
     element: <CloudDashboard />,
   },
   {

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginWithGoogle } from "./apis/loginWihtGoogle";
+import { useLoginMutation } from "./apis/authApi";
+import { Loader2 } from "lucide-react";
 const Login = () => {
-  const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
-
   const [formData, setFormData] = useState({
     email: "anurag@gmail.com",
     password: "abcd",
@@ -28,31 +28,16 @@ const Login = () => {
       [name]: value,
     }));
   };
+  const [login, { isLoading, error }] = useLoginMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch(`${BASE_URL}/user/login`, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        // If there's an error, set the serverError message
-        setServerError(data.error);
-      } else {
-        // On success, navigate to home or any other protected route
-        navigate("/");
-      }
+      await login(formData).unwrap();
+      navigate("/");
+      setServerError(error);
     } catch (error) {
-      console.error("Error:", error);
-      setServerError("Something went wrong. Please try again.");
+      console.log("Login Failed", error);
     }
   };
 
@@ -118,9 +103,17 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+              disabled={isLoading}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Login
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin w-4 h-4" />
+                  Login In...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginWithGoogle } from "./apis/loginWihtGoogle";
+import { useRegisterMutation, useVerigyOtpMutation } from "./apis/authApi";
+import { Loader2 } from "lucide-react";
 
 const Register = () => {
   const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
@@ -20,7 +22,8 @@ const Register = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const navigate = useNavigate();
-
+  const [register, { isLoading: isRegisterLoading }] = useRegisterMutation();
+  const [verifyOtp, { isLoading: isOtpLoading }] = useVerigyOtpMutation();
   // Handler for input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,50 +45,23 @@ const Register = () => {
     setIsSuccess(false); // reset success if any
 
     try {
-      const response = await fetch(`${BASE_URL}/user/register`, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setServerError(data.message || "Registration failed");
-        return;
-      }
+      await register(formData).unwrap();
       SetOtpSent(true);
     } catch (error) {
-      // In case fetch fails
-      console.error("Error:", error);
-      setServerError("Something went wrong. Please try again.");
+      setServerError(error?.data?.message || "Registration failed");
     }
   };
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${BASE_URL}/user/verify-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          emaiL: formData.email,
-          otp,
-        }),
-      });
-      const data = await res.json();
-      if (data.error) {
-        setServerError(data.error);
-      } else {
-        setIsSuccess(true);
-        setTimeout(() => navigate("/login"), 2000);
-        // setServerError()
-      }
+      await verifyOtp({
+        email: formData.email,
+        otp,
+      }).unwrap();
+      setIsSuccess(true);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      setServerError("failed otp verification");
+      setServerError(error?.data?.message || "OTP verification failed");
     }
   };
   return (
@@ -150,9 +126,22 @@ const Register = () => {
                   required
                 />
               </div>
-
-              <button className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition">
-                Send OTP
+              <button
+                type="submit"
+                disabled={isRegisterLoading}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium
+             hover:bg-blue-700 transition
+             flex items-center justify-center gap-2
+             disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isRegisterLoading ? (
+                  <>
+                    <Loader2 className="animate-spin w-4 h-4" />
+                    Sending OTP...
+                  </>
+                ) : (
+                  "Send OTP"
+                )}
               </button>
             </form>
           ) : (
@@ -169,15 +158,22 @@ const Register = () => {
                   <p className="text-xs text-red-500 mt-1">{serverError}</p>
                 )}
               </div>
-
               <button
-                className={`w-full py-2 rounded-lg font-medium transition ${
-                  isSuccess
-                    ? "bg-green-500 text-white"
-                    : "bg-blue-600 text-white hover:bg-blue-700"
-                }`}
+                type="submit"
+                disabled={isOtpLoading}
+                className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium
+             hover:bg-blue-700 transition
+             flex items-center justify-center gap-2
+             disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isSuccess ? "Verified" : "Verify OTP"}
+                {isOtpLoading ? (
+                  <>
+                    <Loader2 className="animate-spin w-4 h-4" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Verify OTP"
+                )}
               </button>
             </form>
           )}
