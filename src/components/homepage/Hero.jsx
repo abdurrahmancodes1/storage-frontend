@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <section className="pt-32 pb-24 px-4 text-center">
       <div className="max-w-4xl mx-auto">
@@ -14,10 +16,16 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button className="bg-blue-600 text-white px-8 py-3 rounded-md flex items-center justify-center">
+          <button
+            onClick={() => navigate("/register")}
+            className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-md flex items-center justify-center"
+          >
             Get Started <ArrowRight size={18} className="ml-2" />
           </button>
-          <button className="border border-slate-300 px-8 py-3 rounded-md">
+          <button
+            onClick={() => navigate("/login")}
+            className="cursor-pointer border border-slate-300 px-8 py-3 rounded-md"
+          >
             Login to Dashboard
           </button>
         </div>

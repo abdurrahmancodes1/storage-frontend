@@ -408,7 +408,7 @@ export default function CloudDashboard() {
   }
   useEffect(() => {
     fetchUser();
-  }, [BASE_URL, []]);
+  }, [BASE_URL]);
 
   const selectedItem =
     selection.length === 1
