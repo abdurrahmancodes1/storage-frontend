@@ -54,9 +54,9 @@ export default function Sidebar({
           </div>
 
           {/* Google Drive Import */}
-          <div className="w-full">
+          {/* <div className="w-full">
             <ImportFromDrive />
-          </div>
+          </div> */}
         </div>
       )}
 

@@ -126,7 +126,7 @@ const Login = () => {
 
           {/* Google Login */}
           <div className="flex justify-center">
-            <GoogleLogin
+            {/* <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 const data = await loginWithGoogle(
                   credentialResponse.credential,
@@ -138,7 +138,7 @@ const Login = () => {
               theme="filled_blue"
               text="continue_with"
               onError={() => console.log("Login Failed")}
-            />
+            /> */}
           </div>
 
           <p className="text-sm text-center text-gray-600 mt-6">
