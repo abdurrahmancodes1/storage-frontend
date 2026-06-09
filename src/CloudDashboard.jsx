@@ -198,7 +198,7 @@ export default function CloudDashboard() {
       if (activeTab === "shared") {
         setDirectoryName("Shared With Me");
       } else {
-        setDirectoryName(dirId ? data.name : "My drive");
+        setDirectoryName(dirId ? data.name : "Home");
       }
       // Reverse directories and files so new items show on top
       setDirectoriesList([...data.directories].reverse());
