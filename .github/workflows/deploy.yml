@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      S3_BUCKET_NAME: storageapp-frontend
+      S3_BUCKET_NAME: storageapp-frontend-deployed
 
       CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
 
