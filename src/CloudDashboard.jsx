@@ -177,7 +177,7 @@ export default function CloudDashboard() {
   const BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
   const { dirId } = useParams();
   const navigate = useNavigate();
-  const [directoryName, setDirectoryName] = useState("My Drive");
+  const [directoryName, setDirectoryName] = useState("Home");
   const [directoriesList, setDirectoriesList] = useState([]);
   const [filesList, setFilesList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
