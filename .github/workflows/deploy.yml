@@ -1,0 +1,58 @@
+name: Deploy StorageApp Frontend
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      S3_BUCKET_NAME: storageapp-frontend
+
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+
+      VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+
+      VITE_BACKEND_BASE_URL: ${{ secrets.VITE_BACKEND_BASE_URL }}
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload files to S3
+        run: |
+          aws s3 sync dist/ s3://${S3_BUCKET_NAME} --delete
+
+      - name: Clear CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
+          --paths "/*"
+
+      - name: Done
+        run: echo "Deployment successful"
