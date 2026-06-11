@@ -193,7 +193,7 @@ export default function CloudDashboard() {
         return;
       }
       const data = await response.json();
-
+      console.log(data, "i am from get direcs");
       // Set directory name
       if (activeTab === "shared") {
         setDirectoryName("Shared With Me");
@@ -261,6 +261,8 @@ export default function CloudDashboard() {
         },
         credentials: "include",
       });
+      const data = await response.json();
+      console.log(data, "this is data");
       setNewDirname("New Folder");
       setShowCreateDirModal(false);
       getDirectoryItems();
@@ -278,9 +280,8 @@ export default function CloudDashboard() {
       if (response.ok) {
         console.log("Logged out successfully");
         // Optionally reset local state
-        setLoggedIn(false);
-
         navigate("/login");
+        setLoggedIn(false);
       } else {
         console.error("Logout failed");
       }

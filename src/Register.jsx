@@ -11,9 +11,9 @@ const Register = () => {
   const [otpSent, SetOtpSent] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "Anurag Singh",
-    email: "anurag@gmail.com",
-    password: "abcd",
+    name: "",
+    email: "",
+    password: "",
   });
 
   // serverError will hold the error message from the server
@@ -70,7 +70,7 @@ const Register = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-6">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
           <span className="font-bold text-lg tracking-tight">
-            Stor<span className="text-blue-600">iX</span>
+            Stor<span className="text-blue-600">Vault</span>
           </span>
 
           <h3 className="text-xl font-semibold text-gray-800 mb-1">
@@ -184,7 +184,7 @@ const Register = () => {
             <div className="flex-1 h-px bg-gray-300" />
           </div>
 
-          <div className="flex justify-center">
+          {/* <div className="flex justify-center">
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 const { success } = await loginWithGoogle(
@@ -198,7 +198,7 @@ const Register = () => {
               theme="filled_blue"
               text="continue_with"
             />
-          </div>
+          </div> */}
 
           <p className="text-sm text-center text-gray-600 mt-6">
             Already have an account?{" "}

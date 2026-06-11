@@ -5,10 +5,7 @@ import { loginWithGoogle } from "./apis/loginWihtGoogle";
 import { useLoginMutation } from "./apis/authApi";
 import { Loader2 } from "lucide-react";
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "anurag@gmail.com",
-    password: "abcd",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   // serverError will hold the error message from the server
   const [serverError, setServerError] = useState("");
@@ -50,7 +47,7 @@ const Login = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-6">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
           <span className="font-bold text-lg tracking-tight">
-            Stor<span className="text-blue-600">iX</span>
+            Stor<span className="text-blue-600">Vault</span>
           </span>
 
           <h3 className="text-xl font-semibold text-gray-800 mb-1">
@@ -118,10 +115,17 @@ const Login = () => {
           </form>
 
           {/* Divider */}
-          <div className="my-6 flex items-center gap-2">
-            <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-xs text-gray-400">OR</span>
-            <div className="flex-1 h-px bg-gray-300" />
+          <div className="my-6 flex justify-center items-center gap-2">
+            {/* <div className="flex-1 h-px bg-gray-300" /> */}
+            <div className="flex items-center">
+              {error && (
+                <span className="text-xs text-red-500">
+                  Invalid credentials
+                </span>
+              )}
+            </div>
+            {/* <span className="text-xs text-gray-400">OR</span> */}
+            {/* <div className="flex-1 h-px bg-gray-300" /> */}
           </div>
 
           {/* Google Login */}
