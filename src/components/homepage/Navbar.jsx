@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Cloud, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ isLoggedIn }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -28,30 +28,38 @@ export default function Navbar() {
           <span className="font-bold">StorageApp</span>
         </div>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className=" flex items-center gap-8">
           <a href="#features" className="text-slate-600 hover:text-blue-600">
             Features
           </a>
-          <button
-            onClick={() => navigate("/login")}
-            className="cursor-pointer text-slate-700 hover:text-blue-600"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navigate("/register")}
-            className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md"
-          >
-            Get Started
-          </button>
+          {!isLoggedIn ? (
+            <button
+              onClick={() => navigate("/login")}
+              className="cursor-pointer text-slate-700 hover:text-blue-600"
+            >
+              Login
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md"
+            >
+              Dashboard
+            </button>
+          )}
+          {!isLoggedIn ? (
+            <button onClick={() => navigate("/register")}>Get Started</button>
+          ) : (
+            ""
+          )}{" "}
         </div>
-
+        {/*
         <button className="md:hidden" onClick={() => setOpen((prev) => !prev)}>
           {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        </button> */}
       </div>
 
-      {open && (
+      {/* {open && (
         <div className="md:hidden bg-white border-t border-slate-200 px-4 py-4 space-y-3">
           <a href="#features" className="block">
             Features
@@ -69,7 +77,7 @@ export default function Navbar() {
             Get Started
           </button>
         </div>
-      )}
+      )} */}
     </nav>
   );
 }

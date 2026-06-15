@@ -14,6 +14,9 @@ export const authApi = createApi({
         body: formData,
       }),
     }),
+    getDirectory: builder.query({
+      query: (dirId = "") => `/directory/${dirId}`,
+    }),
     register: builder.mutation({
       query: (formData) => ({
         url: "/user/register",
@@ -58,4 +61,5 @@ export const {
   useShareWithMutation,
   useSharedWithMeQuery,
   useSharePublicQuery,
+  useGetDirectoryQuery,
 } = authApi;

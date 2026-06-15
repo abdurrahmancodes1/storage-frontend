@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function Hero() {
+export default function Hero({ isLoggedIn }) {
   const navigate = useNavigate();
   return (
     <section className="pt-32 pb-24 px-4 text-center">
@@ -17,17 +17,26 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <button
-            onClick={() => navigate("/register")}
+            onClick={
+              isLoggedIn
+                ? () => navigate("/register")
+                : () => navigate("/dashboard")
+            }
             className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-md flex items-center justify-center"
           >
-            Get Started <ArrowRight size={18} className="ml-2" />
+            {!isLoggedIn ? "Get Started" : "Dashboard"}{" "}
+            <ArrowRight size={18} className="ml-2" />
           </button>
-          <button
-            onClick={() => navigate("/login")}
-            className="cursor-pointer border border-slate-300 px-8 py-3 rounded-md"
-          >
-            Login to Dashboard
-          </button>
+          {isLoggedIn ? (
+            ""
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="cursor-pointer border border-slate-300 px-8 py-3 rounded-md"
+            >
+              Login to Dashboard
+            </button>
+          )}
         </div>
       </div>
     </section>

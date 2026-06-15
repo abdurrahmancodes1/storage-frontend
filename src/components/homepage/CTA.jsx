@@ -1,4 +1,4 @@
-export default function CTA() {
+export default function CTA({ isLoggedIn }) {
   return (
     <section className="py-24 bg-slate-50 border-t border-slate-200 text-center">
       <div className="max-w-3xl mx-auto px-4">
@@ -9,9 +9,13 @@ export default function CTA() {
           Join developers who trust StorageApp with their data.
         </p>
 
-        <button className="bg-blue-600 text-white px-8 py-3 rounded-md">
-          Start for Free
-        </button>
+        {isLoggedIn ? (
+          ""
+        ) : (
+          <button className="bg-blue-600 text-white px-8 py-3 rounded-md">
+            Start for Free
+          </button>
+        )}
       </div>
     </section>
   );

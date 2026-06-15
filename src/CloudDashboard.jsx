@@ -446,6 +446,7 @@ export default function CloudDashboard() {
   const handleUserIconClick = () => {
     setShowUserMenu((prev) => !prev);
   };
+
   return (
     <div className="flex h-screen bg-white text-slate-900 font-sans overflow-hidden">
       {/* --- Sidebar --- */}

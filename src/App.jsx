@@ -5,6 +5,8 @@ import UsersPage from "./UserPage";
 import CloudDashboard from "./CloudDashboard";
 import Plans from "./Plans";
 import Homepage from "./Homepage";
+import PublicRoute from "./PublicRoutes";
+import ProtectedRoute from "./ProtectedRoutes";
 
 const router = createBrowserRouter([
   {
@@ -16,22 +18,39 @@ const router = createBrowserRouter([
     element: <CloudDashboard />,
   },
   {
-    path: "/register",
-    element: <Register />,
+    element: <PublicRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+    ],
   },
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/directory/:dirId",
-    element: <CloudDashboard />,
-  },
-  {
-    path: "/user",
-    element: <UsersPage />,
-  },
-  { path: "/plans", element: <Plans /> }, // {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <CloudDashboard />,
+      },
+      {
+        path: "/directory/:dirId",
+        element: <CloudDashboard />,
+      },
+      {
+        path: "/user",
+        element: <UsersPage />,
+      },
+      {
+        path: "/plans",
+        element: <Plans />,
+      },
+    ],
+  }, // {
   //   path: "/dashboard",
   //   element: <CloudDashboard />,
   // },
