@@ -1,5 +1,13 @@
 // Sidebar.jsx
-import { Cloud, HardDrive, Plus, Share2, Star, Trash2 } from "lucide-react";
+import {
+  Cloud,
+  HardDrive,
+  Plus,
+  Share2,
+  Star,
+  Trash2,
+  Vault,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import ImportFromDrive from "./ImportFromDrive";
 import Button from "../components/ui/Button";
@@ -31,7 +39,8 @@ export default function Sidebar({
           <Cloud className="h-5 w-5 text-white" />
         </div>
         <span className="font-bold text-lg tracking-tight">
-          Stor<span className="text-blue-600">Vault</span>
+          Stor
+          <span className="text-blue-600">Vault</span>
         </span>
       </div>
 

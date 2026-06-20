@@ -10,27 +10,12 @@ import { Loader2, Trash2, RefreshCw } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatFileSize } from "./utils/formatFileSize";
 import ProgressBar from "./components/ui/ProgressBar";
+import { useGetCurrentUserQuery } from "./apis/authApi";
 export default function UsersPage() {
   const [role, setRole] = useState("");
   const [refetch, setRefetch] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_BASE_URL}/user`,
-          { credentials: "include" },
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setRole(data.role);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetchUser();
-  }, [refetch]);
+  const { data: currentUser } = useGetCurrentUserQuery();
   const [userToDeactivate, setUserToDeactivate] = useState(null);
   const [useRoleChange, setUserChangeRole] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
@@ -156,12 +141,14 @@ export default function UsersPage() {
                       Deactivate
                     </button>
 
-                    <button
-                      onClick={() => setUserToDelete(user)}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm py-2.5 rounded-lg transition"
-                    >
-                      Delete
-                    </button>
+                    {currentUser?.role === "Admin" && (
+                      <button
+                        onClick={() => setUserToDelete(user)}
+                        className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm py-2.5 rounded-lg transition"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -201,7 +188,10 @@ export default function UsersPage() {
                   </span>
                 </p>
 
-                {["User", "Manager", "Admin"].map((role) => (
+                {(currentUser?.role === "Admin"
+                  ? ["User", "Manager", "Admin"]
+                  : ["User", "Manager"]
+                ).map((role) => (
                   <button
                     key={role}
                     onClick={() => setSelectedRole(role)}
@@ -331,7 +321,8 @@ export default function UsersPage() {
         </AnimatePresence>
       )}
       {/* Delete Modal */}
-      {userToDelete && (
+      {/* Delete Modal - Admin Only */}
+      {currentUser?.role === "Admin" && userToDelete && (
         <AnimatePresence>
           <motion.div
             initial={{ opacity: 0 }}
@@ -343,22 +334,29 @@ export default function UsersPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+              }}
               className="w-full max-w-md bg-white rounded-2xl shadow-xl"
             >
+              {/* Header */}
               <div className="px-6 py-6 border-b">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 bg-red-50 rounded-full flex items-center justify-center">
                     <Trash2 className="h-5 w-5 text-red-600" />
                   </div>
+
                   <h2 className="text-lg font-semibold text-slate-800">
                     Delete User
                   </h2>
                 </div>
               </div>
 
+              {/* Body */}
               <div className="px-6 py-6 text-sm text-slate-600">
-                Are you sure you want to delete{" "}
+                Are you sure you want to permanently delete{" "}
                 <span className="font-semibold text-slate-900">
                   {userToDelete?.name}
                 </span>
@@ -368,6 +366,7 @@ export default function UsersPage() {
                 </p>
               </div>
 
+              {/* Footer */}
               <div className="flex justify-end gap-3 px-6 py-5 bg-slate-50 rounded-b-2xl">
                 <button
                   onClick={() => setUserToDelete(null)}
@@ -377,11 +376,12 @@ export default function UsersPage() {
                 </button>
 
                 <button
+                  disabled={deleteLoading}
                   onClick={async () => {
                     await deleteUser(userToDelete._id);
                     setUserToDelete(null);
                   }}
-                  className="px-4 py-2.5 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition inline-flex items-center gap-2"
+                  className="px-4 py-2.5 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition inline-flex items-center gap-2 disabled:opacity-50"
                 >
                   {deleteLoading ? (
                     <>

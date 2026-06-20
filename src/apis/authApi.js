@@ -7,6 +7,9 @@ export const authApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
+    getCurrentUser: builder.query({
+      query: () => "/user",
+    }),
     login: builder.mutation({
       query: (formData) => ({
         url: "/user/login",
@@ -62,4 +65,5 @@ export const {
   useSharedWithMeQuery,
   useSharePublicQuery,
   useGetDirectoryQuery,
+  useGetCurrentUserQuery,
 } = authApi;

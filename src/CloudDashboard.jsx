@@ -15,7 +15,7 @@ import ShareModel from "./components/ShareModel";
 import Toolbar from "./components/Toolbar";
 import FileGrid from "./components/FileGrid";
 import Sidebar from "./components/Sidebar";
-import { useSharedWithMeQuery } from "./apis/authApi";
+import { useGetCurrentUserQuery, useSharedWithMeQuery } from "./apis/authApi";
 import Avatar from "./components/ui/Avatar";
 
 // --- Utility: Class Merger ---
@@ -375,7 +375,7 @@ export default function CloudDashboard() {
       }
 
       getDirectoryItems();
-      fetchUser();
+      refetch();
     };
     xhr.onerror = () => {
       console.error("Upload failed");
@@ -383,33 +383,7 @@ export default function CloudDashboard() {
     xhr.send(item.file);
   }
 
-  const [storageUsed, setStorageUsed] = useState(0);
-  const [maxStorage, setMaxStorage] = useState(0);
-  async function fetchUser() {
-    try {
-      const response = await fetch(`${BASE_URL}/user`, {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data, "i am called");
-        setStorageUsed(data.storageUsed);
-        setMaxStorage(data.maxStorageLimit);
-        setUserName(data.name);
-        setUserEmail(data.email);
-        setLoggedIn(true);
-      } else if (response.status === 401) {
-        navigate("/login");
-      } else {
-        console.error("Error fetching user info:", response.status);
-      }
-    } catch (err) {
-      console.error("Error fetching user info:", err);
-    }
-  }
-  useEffect(() => {
-    fetchUser();
-  }, [BASE_URL]);
+  const { data: user, isLoading, refetch } = useGetCurrentUserQuery();
 
   const selectedItem =
     selection.length === 1
@@ -457,8 +431,8 @@ export default function CloudDashboard() {
         handleFileSelect={handleFileSelect}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        storageUsed={storageUsed}
-        maxStorage={maxStorage}
+        storageUsed={user?.storageUsed || 0}
+        maxStorage={user?.maxStorageLimit || 0}
         formatFileSize={formatFileSize}
       />
       {/* --- Main Content --- */}
@@ -517,17 +491,17 @@ export default function CloudDashboard() {
                 onClick={handleUserIconClick}
                 className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100"
               >
-                <Avatar fallback={userName[0] || "U"} />
+                <Avatar fallback={user?.name?.[0] || "U"} />
               </button>
 
               <UserMenuPortal anchorRef={userMenuRef} open={showUserMenu}>
                 <div className="w-64 rounded-xl border border-slate-200 bg-white shadow-lg">
                   <div className="px-4 py-3 border-b border-slate-100">
                     <p className="text-sm font-semibold text-slate-900">
-                      {userName}
+                      {user?.name}
                     </p>
                     <p className="text-xs text-slate-500 truncate">
-                      {userEmail}
+                      {user?.email}
                     </p>
                   </div>
 
