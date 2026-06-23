@@ -13,6 +13,7 @@ import ImportFromDrive from "./ImportFromDrive";
 import Button from "../components/ui/Button";
 import { cn } from "@/lib/utils";
 import ProgressBar from "../components/ui/ProgressBar";
+import { useNavigate } from "react-router-dom";
 export default function Sidebar({
   isSidebarOpen,
   fileInputRef,
@@ -24,7 +25,7 @@ export default function Sidebar({
   formatFileSize,
 }) {
   const isOwnerView = activeTab === "files";
-
+  const navigate = useNavigate();
   return (
     <motion.aside
       initial={false}
@@ -112,7 +113,10 @@ export default function Sidebar({
         <p className="text-xs text-slate-500 mb-3">
           {formatFileSize(storageUsed)} of {formatFileSize(maxStorage)}
         </p>
-        <button className="w-full py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors">
+        <button
+          onClick={() => navigate("/plans")}
+          className="w-full py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors"
+        >
           Upgrade Plan
         </button>
       </div>

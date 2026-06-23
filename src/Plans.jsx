@@ -1,88 +1,58 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { createSubscription } from "./apis/subscriptionApi";
+import { useCreateSubscriptionMutation } from "./apis/subscriptionApi";
 
 const PLAN_CATALOG = {
   monthly: [
     {
-      id: "plan_SF6yH3NknwSNU2",
+      id: "plan_T4wmQjED9Pmc5M",
       name: "Starter",
-      tagline: "Great for individuals",
-      storage: "2 TB",
-      price: 199,
+      tagline: "For personal storage",
+      storage: "500 MB",
+      price: 19,
       period: "/mo",
-      cta: "Choose 2 TB",
-      features: [
-        "Secure cloud storage",
-        "Link & folder sharing",
-        "Basic support",
-      ],
+      cta: "Choose Starter",
+      features: ["500 MB cloud storage", "Secure file upload", "File sharing"],
       popular: false,
     },
     {
-      id: "plan_SEyBjesTU47tkg",
+      id: "plan_T4wnHOVroQPyZA",
       name: "Pro",
-      tagline: "For creators & devs",
-      storage: "5 TB",
-      price: 399,
+      tagline: "For more storage needs",
+      storage: "2 GB",
+      price: 49,
       period: "/mo",
-      cta: "Choose 5 TB",
-      features: ["Everything in Starter", "Priority uploads", "Email support"],
+      cta: "Choose Pro",
+      features: ["2 GB cloud storage", "Secure file upload", "File sharing"],
       popular: true,
-    },
-    {
-      id: "plan_SEyCWFKJeMUhvw",
-      name: "Ultimate",
-      tagline: "Teams & power users",
-      storage: "10 TB",
-      price: 699,
-      period: "/mo",
-      cta: "Choose 10 TB",
-      features: ["Everything in Pro", "Version history", "Priority support"],
-      popular: false,
     },
   ],
+
   yearly: [
     {
-      id: "plan_SEyDbiQtlFKwvs",
+      id: "plan_T4wtL2ZZ61pN10",
       name: "Starter",
-      tagline: "Great for individuals",
-      storage: "2 TB",
-      price: 1999,
+      tagline: "Yearly storage plan",
+      storage: "500 MB",
+      price: 199,
       period: "/yr",
-      cta: "Choose 2 TB",
-      features: [
-        "Secure cloud storage",
-        "Link & folder sharing",
-        "Basic support",
-      ],
+      cta: "Choose Starter",
+      features: ["500 MB cloud storage", "Secure file upload", "File sharing"],
       popular: false,
     },
     {
-      id: "plan_SEyEkk1GIYrGWY",
+      id: "plan_T4ws4Ajz45xKH6",
       name: "Pro",
-      tagline: "For creators & devs",
-      storage: "5 TB",
-      price: 3999,
+      tagline: "Best value storage plan",
+      storage: "2 GB",
+      price: 499,
       period: "/yr",
-      cta: "Choose 5 TB",
-      features: ["Everything in Starter", "Priority uploads", "Email support"],
+      cta: "Choose Pro",
+      features: ["2 GB cloud storage", "Secure file upload", "File sharing"],
       popular: true,
-    },
-    {
-      id: "plan_SEyFXxIsQJQLuj",
-      name: "Ultimate",
-      tagline: "Teams & power users",
-      storage: "10 TB",
-      price: 6999,
-      period: "/yr",
-      cta: "Choose 10 TB",
-      features: ["Everything in Pro", "Version history", "Priority support"],
-      popular: false,
     },
   ],
 };
-
 function classNames(...cls) {
   return cls.filter(Boolean).join(" ");
 }
@@ -169,12 +139,17 @@ function PlanCard({ plan, onSelect }) {
 export default function Plans() {
   const [mode, setMode] = useState("monthly");
   const plans = PLAN_CATALOG[mode];
+  const [createSubscription, { isLoading }] = useCreateSubscriptionMutation();
 
   async function handleSelect(plan) {
-    console.log(plan.id);
-    const { subscriptionId } = await createSubscription(plan.id);
-    console.log(subscriptionId);
-    openRazorpayPopup({ subscriptionId });
+    console.log(plan);
+    try {
+      const data = await createSubscription(plan.id).unwrap();
+      console.log(data);
+      openRazorpayPopup(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
