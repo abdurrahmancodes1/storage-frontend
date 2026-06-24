@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useGetDirectoryQuery } from "./apis/authApi";
+import { useGetCurrentUserQuery, useGetDirectoryQuery } from "./apis/authApi";
 
 const ProtectedRoute = () => {
-  const { isError, isLoading } = useGetDirectoryQuery("");
+  // const { isError, isLoading } = useGetDirectoryQuery("");
+  const { data, isLoading, isFetching, isError } = useGetCurrentUserQuery();
+  if (isLoading || isFetching) return null;
 
-  if (isLoading) return null;
-
-  if (isError) {
+  if (isError || !data?.user) {
     return <Navigate to="/login" replace />;
   }
 

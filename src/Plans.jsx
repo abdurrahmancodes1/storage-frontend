@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateSubscriptionMutation } from "./apis/subscriptionApi";
 
 const PLAN_CATALOG = {
@@ -140,15 +140,15 @@ export default function Plans() {
   const [mode, setMode] = useState("monthly");
   const plans = PLAN_CATALOG[mode];
   const [createSubscription, { isLoading }] = useCreateSubscriptionMutation();
-
+  const navigate = useNavigate();
   async function handleSelect(plan) {
     console.log(plan);
     try {
       const data = await createSubscription(plan.id).unwrap();
       console.log(data);
-      openRazorpayPopup(data);
+      openRazorpayPopup(data, navigate);
     } catch (error) {
-      console.log(error);
+      alert(error?.data?.message || "Unable to create subscription");
     }
   }
 
@@ -219,14 +219,16 @@ export default function Plans() {
   );
 }
 
-function openRazorpayPopup({ subscriptionId }) {
+function openRazorpayPopup({ subscriptionId }, navigate) {
   const rzp = new window.Razorpay({
     key: "rzp_test_S23Gy7SP1MEQyr",
     name: "Storage App",
 
     subscription_id: subscriptionId,
     handler: async function (response) {
-      console.log(response);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
     },
   });
   rzp.on("payment.failed", function (response) {

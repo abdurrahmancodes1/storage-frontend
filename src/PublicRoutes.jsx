@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useGetDirectoryQuery } from "./apis/authApi";
+import { useGetCurrentUserQuery } from "./apis/authApi";
+// import { useGetMeQuery } from "./apis/userApi";
 
 const PublicRoute = () => {
-  const { isSuccess, isLoading } = useGetDirectoryQuery("");
+  const { data, isLoading } = useGetCurrentUserQuery();
 
   if (isLoading) return null;
 
-  if (isSuccess) {
+  if (data?.user) {
     return <Navigate to="/dashboard" replace />;
   }
 

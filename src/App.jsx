@@ -7,11 +7,21 @@ import Plans from "./Plans";
 import Homepage from "./Homepage";
 import PublicRoute from "./PublicRoutes";
 import ProtectedRoute from "./ProtectedRoutes";
+import PrivacyPolicy from "./PrivacyPage";
+import TermsOfService from "./TermsOfServicePage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Homepage />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: "/terms-of-service",
+    element: <TermsOfService />,
   },
   {
     path: "/dashboard",
