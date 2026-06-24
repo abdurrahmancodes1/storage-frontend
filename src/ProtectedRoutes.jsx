@@ -6,7 +6,7 @@ const ProtectedRoute = () => {
   const { data, isLoading, isFetching, isError } = useGetCurrentUserQuery();
   if (isLoading || isFetching) return null;
 
-  if (isError || !data?.user) {
+  if (isError || !data) {
     return <Navigate to="/login" replace />;
   }
 

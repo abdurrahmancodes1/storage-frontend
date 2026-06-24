@@ -4,10 +4,10 @@ import { useGetCurrentUserQuery } from "./apis/authApi";
 
 const PublicRoute = () => {
   const { data, isLoading } = useGetCurrentUserQuery();
-
+  console.log(data, "from route");
   if (isLoading) return null;
 
-  if (data?.user) {
+  if (data) {
     return <Navigate to="/dashboard" replace />;
   }
 
