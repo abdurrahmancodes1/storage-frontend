@@ -134,9 +134,9 @@ const router = createBrowserRouter([
   {
     path: "/plans",
     element: (
-      <RoleProtectedRoute allowedRoles={["manager", "admin"]}>
+      <ProtectedRoute>
         <Plans />
-      </RoleProtectedRoute>
+      </ProtectedRoute>
     ),
   },
 ]);
