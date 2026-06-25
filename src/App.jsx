@@ -25,7 +25,12 @@ import { useGetCurrentUserQuery } from "./apis/authApi";
 const GuestRoute = ({ children }) => {
   const { data: user, isLoading } = useGetCurrentUserQuery();
 
-  if (isLoading) return <div>Loading...</div>; // Prevents flickering before RTK finishes
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    ); // Prevents flickering before RTK finishes
 
   if (user) {
     return <Navigate to="/dashboard" replace />;
