@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { loginWithGoogle } from "./apis/loginWihtGoogle";
-import { useLoginMutation } from "./apis/authApi";
+import { authApi, useLoginMutation } from "./apis/authApi";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -26,12 +27,13 @@ const Login = () => {
     }));
   };
   const [login, { isLoading, error }] = useLoginMutation();
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await login(formData).unwrap();
-      navigate("/dashboard");
+      dispatch(authApi.util.resetApiState());
+      navigate("/dashboard", { replace: true });
       setServerError(error);
     } catch (error) {
       console.log("Login Failed", error);

@@ -15,8 +15,13 @@ import ShareModel from "./components/ShareModel";
 import Toolbar from "./components/Toolbar";
 import FileGrid from "./components/FileGrid";
 import Sidebar from "./components/Sidebar";
-import { useGetCurrentUserQuery, useSharedWithMeQuery } from "./apis/authApi";
+import {
+  authApi,
+  useGetCurrentUserQuery,
+  useSharedWithMeQuery,
+} from "./apis/authApi";
 import Avatar from "./components/ui/Avatar";
+import { useDispatch } from "react-redux";
 
 // --- Utility: Class Merger ---
 
@@ -187,9 +192,7 @@ export default function CloudDashboard() {
       const response = await fetch(`${BASE_URL}/directory/${dirId || ""}`, {
         credentials: "include",
       });
-
-      if (response.status === 401) {
-        navigate("/login");
+      if (!response.ok) {
         return;
       }
       const data = await response.json();
@@ -270,6 +273,7 @@ export default function CloudDashboard() {
       setErrorMessage(error.message);
     }
   }
+  const dispatch = useDispatch();
   const handleLogout = async () => {
     try {
       const response = await fetch(`${BASE_URL}/user/logout`, {
@@ -279,6 +283,7 @@ export default function CloudDashboard() {
       console.log("I am called");
       if (response.ok) {
         console.log("Logged out successfully");
+        dispatch(authApi.util.resetApiState());
         // Optionally reset local state
         navigate("/login");
         setLoggedIn(false);
@@ -383,7 +388,11 @@ export default function CloudDashboard() {
     xhr.send(item.file);
   }
 
-  const { data: user, isLoading, refetch } = useGetCurrentUserQuery();
+  const {
+    data: user,
+    isLoading,
+    refetch,
+  } = useGetCurrentUserQuery(undefined, { refetchOnMountOrArgChange: false });
 
   const selectedItem =
     selection.length === 1
