@@ -15,29 +15,17 @@ export default function Hero({ isLoggedIn }) {
           Simple cloud storage for managing your files with clarity and speed.
         </p>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button
-            onClick={
-              isLoggedIn
-                ? () => navigate("/register")
-                : () => navigate("/dashboard")
-            }
-            className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-md flex items-center justify-center"
-          >
-            {!isLoggedIn ? "Get Started" : "Dashboard"}{" "}
-            <ArrowRight size={18} className="ml-2" />
-          </button>
-          {isLoggedIn ? (
-            ""
-          ) : (
+        {!isLoggedIn && (
+          <div className="flex justify-center">
             <button
-              onClick={() => navigate("/login")}
-              className="cursor-pointer border border-slate-300 px-8 py-3 rounded-md"
+              onClick={() => navigate("/register")}
+              className="cursor-pointer bg-blue-600 text-white px-8 py-3 rounded-md flex items-center justify-center hover:bg-blue-700 transition"
             >
-              Login to Dashboard
+              Get Started
+              <ArrowRight size={18} className="ml-2" />
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

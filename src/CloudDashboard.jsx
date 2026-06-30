@@ -444,6 +444,12 @@ export default function CloudDashboard() {
         maxStorage={user?.maxStorageLimit || 0}
         formatFileSize={formatFileSize}
       />
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
       {/* --- Main Content --- */}
       <main className="flex-1 flex flex-col min-w-0 bg-white">
         {/* Top Bar */}
@@ -451,12 +457,12 @@ export default function CloudDashboard() {
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-1 hover:bg-slate-100 rounded-lg text-slate-500"
+              className="md:hidden p-1 hover:bg-slate-100 rounded-lg text-slate-500"
             >
               <Menu className="h-5 w-5" />
             </button>
             {/* ✅ CURRENT DIRECTORY NAME */}
-            <div className="flex items-center gap-2 flex-1 min-w-0">
+            <div className=" hidden sm:block  items-center gap-2 flex-1 min-w-0">
               <button
                 onClick={() => navigate(-1)}
                 className="p-1 rounded-lg text-slate-500 hover:bg-slate-100"
@@ -464,21 +470,24 @@ export default function CloudDashboard() {
               >
                 <ArrowUp className="h-5 w-5" />
               </button>
-
-              <div className="flex flex-col min-w-0">
-                <h1 className="text-sm sm:text-sm font-semibold text-slate-900 truncate">
+              <div className="flex flex-col min-w-0 max-w-[100px] sm:max-w-none">
+                <h1 className="hidden sm:block text-sm font-semibold truncate">
                   {directoryName}
                 </h1>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs hidden sm:block text-slate-400">
                   {combinedItems.length} items
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-shrink-0">
             <div
-              className={`relative   md:block group flex-1 max-w-sm  ${isSidebarOpen ? "hidden" : ""} `}
+              className={`relative flex-1 transition-all duration-200 ${
+                isSidebarOpen && window.innerWidth < 768
+                  ? "max-w-0 overflow-hidden opacity-0"
+                  : "max-w-sm opacity-100"
+              }`}
             >
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-blue-500" />
               <input
@@ -486,7 +495,7 @@ export default function CloudDashboard() {
                 placeholder="Search files..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`h-9 w-64 pl-9 pr-4 rounded-lg bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400`}
+                className={`h-9 w-full sm:w-64 pl-9 pr-4 rounded-lg bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400`}
               />
             </div>
 

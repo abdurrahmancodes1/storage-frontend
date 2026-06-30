@@ -29,13 +29,16 @@ export default function Navbar({ isLoggedIn }) {
         </div>
 
         <div className=" flex items-center gap-8">
-          <a href="#features" className="text-slate-600 hover:text-blue-600">
+          <a
+            href="#features"
+            className="hidden sm:block text-slate-600 hover:text-blue-600"
+          >
             Features
           </a>
           {!isLoggedIn ? (
             <button
               onClick={() => navigate("/login")}
-              className="cursor-pointer text-slate-700 hover:text-blue-600"
+              className="cursor-pointer border border-blue-600 text-blue-600 px-4 py-2 rounded-md hover:bg-blue-600 hover:text-white transition"
             >
               Login
             </button>
@@ -47,11 +50,6 @@ export default function Navbar({ isLoggedIn }) {
               Dashboard
             </button>
           )}
-          {!isLoggedIn ? (
-            <button onClick={() => navigate("/register")}>Get Started</button>
-          ) : (
-            ""
-          )}{" "}
         </div>
         {/*
         <button className="md:hidden" onClick={() => setOpen((prev) => !prev)}>

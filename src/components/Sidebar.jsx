@@ -20,6 +20,7 @@ export default function Sidebar({
   handleFileSelect,
   activeTab,
   setActiveTab,
+  setIsSidebarOpen,
   storageUsed,
   maxStorage,
   formatFileSize,
@@ -30,10 +31,14 @@ export default function Sidebar({
     <motion.aside
       initial={false}
       animate={{
-        width: isSidebarOpen ? 256 : 0,
-        opacity: isSidebarOpen ? 1 : 0,
+        x: window.innerWidth >= 768 ? 0 : isSidebarOpen ? 0 : -256,
       }}
-      className="flex-shrink-0 bg-slate-50 border-r border-slate-200 flex flex-col overflow-hidden"
+      transition={{ duration: 0.25 }}
+      className={cn(
+        "fixed md:relative top-0 left-0 z-40 h-screen md:h-auto w-64",
+        "bg-slate-50 border-r border-slate-200 flex flex-col",
+        "md:translate-x-0",
+      )}
     >
       <div className="p-4 flex items-center gap-2">
         <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -83,7 +88,12 @@ export default function Sidebar({
         ].map((item) => (
           <button
             key={item.id}
-            onClick={() => setActiveTab(item.id)}
+            onClick={() => {
+              setActiveTab(item.id);
+              if (window.innerWidth < 768) {
+                setIsSidebarOpen(false);
+              }
+            }}
             className={cn(
               "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
               activeTab === item.id
