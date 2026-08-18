@@ -57,6 +57,8 @@ export default function CloudDashboard() {
   const [viewMode, setViewMode] = useState("grid"); // 'grid' | 'list'
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
+  const isMobileViewport = viewportWidth < 768;
   const [activeTab, setActiveTab] = useState("files");
   const [showRenameModal, setShowRenameModal] = useState(false);
   const [renameType, setRenameType] = useState(null); // "directory" or "file"
@@ -82,6 +84,22 @@ export default function CloudDashboard() {
 
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const nextWidth = window.innerWidth;
+      setViewportWidth(nextWidth);
+
+      if (nextWidth >= 768) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   function openRenameModal(type, id, currentName) {
@@ -436,6 +454,7 @@ export default function CloudDashboard() {
 
       <Sidebar
         isSidebarOpen={isSidebarOpen}
+        isMobileViewport={isMobileViewport}
         fileInputRef={fileInputRef}
         handleFileSelect={handleFileSelect}
         activeTab={activeTab}
@@ -444,7 +463,7 @@ export default function CloudDashboard() {
         maxStorage={user?.maxStorageLimit || 0}
         formatFileSize={formatFileSize}
       />
-      {isSidebarOpen && (
+      {isSidebarOpen && isMobileViewport && (
         <div
           className="fixed inset-0 bg-black/30 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
@@ -484,7 +503,7 @@ export default function CloudDashboard() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <div
               className={`relative flex-1 transition-all duration-200 ${
-                isSidebarOpen && window.innerWidth < 768
+                isSidebarOpen && isMobileViewport
                   ? "max-w-0 overflow-hidden opacity-0"
                   : "max-w-sm opacity-100"
               }`}

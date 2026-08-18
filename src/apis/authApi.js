@@ -6,6 +6,7 @@ export const authApi = createApi({
     baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
     credentials: "include",
   }),
+  tagTypes: ["PublicShare"],
   endpoints: (builder) => ({
     getCurrentUser: builder.query({
       query: () => "/user",
@@ -50,8 +51,40 @@ export const authApi = createApi({
     sharedWithMe: builder.query({
       query: () => "/user/share/me",
     }),
-    sharePublic: builder.query({
-      query: () => "/user/share/public",
+    sharePublic: builder.mutation({
+      query: ({ fileId }) => ({
+        url: "/user/share/public",
+        method: "POST",
+        body: { fileId },
+      }),
+      invalidatesTags: (result, error, { fileId }) => [
+        {
+          type: "PublicShare",
+          id: fileId,
+        },
+      ],
+    }),
+    getPublicShare: builder.query({
+      query: (fileId) => `/user/share/public/${fileId}`,
+      providesTags: (result, error, fileId) => [
+        {
+          type: "PublicShare",
+          id: fileId,
+        },
+      ],
+    }),
+    revokePublicShare: builder.mutation({
+      query: ({ fileId }) => ({
+        url: "/user/share/public/revoke",
+        method: "PATCH",
+        body: { fileId },
+      }),
+      invalidatesTags: (result, error, { fileId }) => [
+        {
+          type: "PublicShare",
+          id: fileId,
+        },
+      ],
     }),
   }),
 });
@@ -63,7 +96,9 @@ export const {
   useFetchUsersQuery,
   useShareWithMutation,
   useSharedWithMeQuery,
-  useSharePublicQuery,
+  useSharePublicMutation,
   useGetDirectoryQuery,
   useGetCurrentUserQuery,
+  useGetPublicShareQuery,
+  useRevokePublicShareMutation,
 } = authApi;

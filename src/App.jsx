@@ -16,6 +16,8 @@ import Homepage from "./Homepage";
 import PrivacyPolicy from "./PrivacyPage";
 import TermsOfService from "./TermsOfServicePage";
 import { useGetCurrentUserQuery } from "./apis/authApi";
+import PreviewPage from "./PreviewPage";
+import PublicSharePage from "./PublicSharePage";
 
 // ----------------------------------------------------------------------
 // ROUTE PROTECTORS using RTK Query
@@ -121,7 +123,18 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-
+  {
+    path: "/preview/:id",
+    element: (
+      <ProtectedRoute>
+        <PreviewPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/share/:token",
+    element: <PublicSharePage />,
+  },
   // --- Role-Protected Routes ---
   {
     path: "/user",

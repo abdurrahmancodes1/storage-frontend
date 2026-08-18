@@ -184,7 +184,7 @@ const Register = () => {
             <div className="flex-1 h-px bg-gray-300" />
           </div>
 
-          {/* <div className="flex justify-center">
+          <div className="flex justify-center">
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 const { success } = await loginWithGoogle(
@@ -198,7 +198,7 @@ const Register = () => {
               theme="filled_blue"
               text="continue_with"
             />
-          </div> */}
+          </div>
 
           <p className="text-sm text-center text-gray-600 mt-6">
             Already have an account?{" "}

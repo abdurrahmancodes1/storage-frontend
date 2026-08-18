@@ -85,7 +85,7 @@ const FileGrid = ({
     if (type === "directory") {
       navigate(`/directory/${id}`);
     } else {
-      window.location.href = `${BASE_URL}/file/${id}`;
+      navigate(`/preview/${id}`);
     }
   }
 

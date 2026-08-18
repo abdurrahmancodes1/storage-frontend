@@ -16,6 +16,7 @@ import ProgressBar from "../components/ui/ProgressBar";
 import { useNavigate } from "react-router-dom";
 export default function Sidebar({
   isSidebarOpen,
+  isMobileViewport,
   fileInputRef,
   handleFileSelect,
   activeTab,
@@ -31,7 +32,7 @@ export default function Sidebar({
     <motion.aside
       initial={false}
       animate={{
-        x: window.innerWidth >= 768 ? 0 : isSidebarOpen ? 0 : -256,
+        x: isMobileViewport ? (isSidebarOpen ? 0 : -256) : 0,
       }}
       transition={{ duration: 0.25 }}
       className={cn(
@@ -90,7 +91,7 @@ export default function Sidebar({
             key={item.id}
             onClick={() => {
               setActiveTab(item.id);
-              if (window.innerWidth < 768) {
+              if (isMobileViewport) {
                 setIsSidebarOpen(false);
               }
             }}
