@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetPublicFileQuery } from "./apis/fileApi2";
 import FilePreviewViewer from "./FilePreviewViewer";
+import Loader from "./Loader";
 
 const PublicSharePage = () => {
   const { token } = useParams();
@@ -8,11 +9,7 @@ const PublicSharePage = () => {
   const { data, isLoading, isError } = useGetPublicFileQuery(token);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f8fafc]">
-        Loading shared file...
-      </div>
-    );
+    return <Loader />;
   }
 
   if (isError || !data) {
