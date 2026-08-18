@@ -1,5 +1,18 @@
+import { useEffect, useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
+).toString();
+
 const FilePreviewViewer = ({ url, name, extension }) => {
   const ext = extension.toLowerCase();
+
+  const [numPages, setNumPages] = useState(null);
 
   const isImage = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"].includes(
     ext,
@@ -11,9 +24,62 @@ const FilePreviewViewer = ({ url, name, extension }) => {
 
   const isAudio = [".mp3", ".wav", ".ogg", ".m4a"].includes(ext);
 
+  // -----------------------------
+  // PDF
+  // -----------------------------
+
+  if (isPdf) {
+    return (
+      <div className="min-h-[calc(100vh-190px)] bg-slate-100 p-3 sm:p-6">
+        <Document
+          file={url}
+          onLoadSuccess={({ numPages }) => {
+            setNumPages(numPages);
+          }}
+          onLoadError={(error) => {
+            console.error("PDF loading error:", error);
+          }}
+          loading={
+            <div className="flex min-h-[500px] items-center justify-center">
+              <p className="text-sm text-slate-500">Loading PDF...</p>
+            </div>
+          }
+          error={
+            <div className="flex min-h-[500px] items-center justify-center">
+              <div className="text-center">
+                <h2 className="font-semibold text-slate-700">
+                  Unable to preview PDF
+                </h2>
+
+                <p className="mt-2 text-sm text-slate-500">
+                  Try downloading the file instead.
+                </p>
+              </div>
+            </div>
+          }
+          className="flex flex-col items-center gap-4"
+        >
+          {Array.from(new Array(numPages), (_, index) => (
+            <Page
+              key={`page_${index + 1}`}
+              pageNumber={index + 1}
+              width={Math.min(window.innerWidth - 32, 900)}
+              renderTextLayer
+              renderAnnotationLayer
+            />
+          ))}
+        </Document>
+      </div>
+    );
+  }
+
+  // -----------------------------
+  // Images
+  // -----------------------------
+
   if (isImage) {
     return (
-      <div className="flex min-h-[calc(100vh-190px)] items-center justify-center bg-[#f1f5f9] p-6">
+      <div className="flex min-h-[calc(100vh-190px)] items-center justify-center bg-slate-100 p-6">
         <img
           src={url}
           alt={name}
@@ -23,35 +89,35 @@ const FilePreviewViewer = ({ url, name, extension }) => {
     );
   }
 
-  if (isPdf) {
-    return (
-      <iframe
-        src={url}
-        title={name}
-        className="block h-[calc(100vh-180px)] w-full border-0"
-      />
-    );
-  }
+  // -----------------------------
+  // Video
+  // -----------------------------
 
   if (isVideo) {
     return (
-      <div className="flex min-h-[calc(100vh-190px)] items-center justify-center bg-[#0f172a]">
+      <div className="flex min-h-[calc(100vh-190px)] items-center justify-center bg-slate-950 p-4">
         <video
           src={url}
           controls
+          playsInline
+          preload="metadata"
           className="max-h-[calc(100vh-220px)] max-w-full rounded-xl"
         />
       </div>
     );
   }
 
+  // -----------------------------
+  // Audio
+  // -----------------------------
+
   if (isAudio) {
     return (
       <div className="flex min-h-[calc(100vh-190px)] items-center justify-center">
         <div className="flex flex-col items-center gap-6">
-          <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-[#eff6ff]">
+          <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-blue-50">
             <svg
-              className="h-10 w-10 text-[#2563eb]"
+              className="h-10 w-10 text-blue-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -73,12 +139,16 @@ const FilePreviewViewer = ({ url, name, extension }) => {
     );
   }
 
+  // -----------------------------
+  // Unsupported
+  // -----------------------------
+
   return (
     <div className="flex min-h-[calc(100vh-190px)] items-center justify-center">
       <div className="text-center">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-[#eff6ff]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-50">
           <svg
-            className="h-9 w-9 text-[#2563eb]"
+            className="h-9 w-9 text-blue-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -95,7 +165,7 @@ const FilePreviewViewer = ({ url, name, extension }) => {
 
         <h2 className="mt-5 text-lg font-semibold">Preview unavailable</h2>
 
-        <p className="mt-2 text-sm text-[#64748b]">
+        <p className="mt-2 text-sm text-slate-500">
           This file type cannot be previewed in StorageApp.
         </p>
       </div>
