@@ -181,7 +181,7 @@ const Register = () => {
           <div className="my-6 flex items-center gap-2">
             <div className="flex-1 h-px bg-gray-300" />
             <span className="text-xs text-gray-400">OR</span>
-            <div className="flex-1 h-px bg-gray-300" />
+            <div className="flex-1 h-px bg-gray-400" />
           </div>
 
           <div className="flex justify-center">

@@ -36,7 +36,7 @@ const Login = () => {
       navigate("/dashboard", { replace: true });
       setServerError(error);
     } catch (error) {
-      console.log("Login Failed", error);
+      console.log("Login Failed");
     }
   };
 
