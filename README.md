@@ -76,7 +76,7 @@ https://storvault.xyz
 
 ## Screenshots
 
-No dedicated screenshot assets were included in this repository, so this section is intentionally minimal.
+Will be added soon!
 
 ---
 
