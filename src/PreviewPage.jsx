@@ -134,7 +134,6 @@ const PreviewPage = () => {
   // --------------------------------------------------
 
   const handlePdfLoadSuccess = ({ numPages }) => {
-    console.log("PDF loaded successfully:", numPages);
     setNumPages(numPages);
   };
 

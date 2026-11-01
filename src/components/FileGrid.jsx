@@ -81,7 +81,6 @@ const FileGrid = ({
 }) => {
   const navigate = useNavigate();
   function handleRowClick(type, id) {
-    console.log("I am called");
     if (type === "directory") {
       navigate(`/directory/${id}`);
     } else {

@@ -36,7 +36,6 @@ export default function ImportFromDrive({ key, setKey }) {
             },
           );
           setKey((value) => !value);
-          console.log("SELECTED FILES:", data.docs);
         }
       },
     });

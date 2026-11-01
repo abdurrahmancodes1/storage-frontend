@@ -142,10 +142,8 @@ export default function Plans() {
   const [createSubscription, { isLoading }] = useCreateSubscriptionMutation();
   const navigate = useNavigate();
   async function handleSelect(plan) {
-    console.log(plan);
     try {
       const data = await createSubscription(plan.id).unwrap();
-      console.log(data);
       openRazorpayPopup(data, navigate);
     } catch (error) {
       alert(error?.data?.message || "Unable to create subscription");
@@ -155,7 +153,6 @@ export default function Plans() {
   useEffect(() => {
     const razorpayScript = document.querySelector("#razorpay-script");
     if (razorpayScript) {
-      console.log("NO razorpayscript");
       return;
     }
     const script = document.createElement("script");
@@ -231,9 +228,7 @@ function openRazorpayPopup({ subscriptionId }, navigate) {
       }, 1500);
     },
   });
-  rzp.on("payment.failed", function (response) {
-    console.log(response);
-  });
+  rzp.on("payment.failed", function (response) {});
 
   rzp.open();
 }

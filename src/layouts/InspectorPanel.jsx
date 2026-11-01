@@ -67,7 +67,6 @@ export default function InspectorPanel({
   sharedFiles,
 }) {
   if (!selectedItem) return null;
-  console.log(sharedFiles, "form here");
   return (
     <motion.aside
       initial={{ x: 320 }}

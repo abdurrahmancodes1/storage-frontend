@@ -214,7 +214,6 @@ export default function CloudDashboard() {
         return;
       }
       const data = await response.json();
-      console.log(data, "i am from get direcs");
       // Set directory name
       if (activeTab === "shared") {
         setDirectoryName("Shared With Me");
@@ -240,7 +239,6 @@ export default function CloudDashboard() {
 
   const combinedItems = useMemo(() => {
     if (activeTab === "shared") {
-      console.log(sharedFiles);
       return sharedFiles.map((f) => ({
         ...f,
         isDirectory: false,
@@ -253,11 +251,9 @@ export default function CloudDashboard() {
     ];
   }, [activeTab, sharedFiles, directoriesList, filesList]);
 
-  console.log("comnined data", combinedItems);
   // Actions
 
   function handleRowClick(type, id) {
-    console.log("I am called");
     if (type === "directory") {
       navigate(`/directory/${id}`);
     } else {
@@ -283,7 +279,6 @@ export default function CloudDashboard() {
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data, "this is data");
       setNewDirname("New Folder");
       setShowCreateDirModal(false);
       getDirectoryItems();
@@ -298,9 +293,7 @@ export default function CloudDashboard() {
         method: "POST",
         credentials: "include",
       });
-      console.log("I am called");
       if (response.ok) {
-        console.log("Logged out successfully");
         dispatch(authApi.util.resetApiState());
         // Optionally reset local state
         navigate("/login");
@@ -321,11 +314,8 @@ export default function CloudDashboard() {
         credentials: "include",
       });
       if (response.ok) {
-        console.log("Logged out successfully");
-        // Optionally reset local state
+        dispatch(authApi.util.resetApiState());
         setLoggedIn(false);
-        setUserName("Guest User");
-        setUserEmail("guest@example.com");
         navigate("/login");
       } else {
         console.error("Logout failed");
@@ -337,7 +327,6 @@ export default function CloudDashboard() {
     }
   };
   async function handleFileSelect(e) {
-    console.log("Im am called");
     const file = e.target.files?.[0];
     if (!file) return;
 

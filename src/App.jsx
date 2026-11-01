@@ -139,7 +139,7 @@ const router = createBrowserRouter([
   {
     path: "/user",
     element: (
-      <RoleProtectedRoute allowedRoles={["manager", "admin"]}>
+      <RoleProtectedRoute allowedRoles={["Manager", "Admin"]}>
         <UsersPage />
       </RoleProtectedRoute>
     ),

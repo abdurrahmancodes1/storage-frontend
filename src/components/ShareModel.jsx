@@ -15,6 +15,7 @@ const ShareModel = ({ onClose, fileId, fileName }) => {
   // User sharing state
   // -----------------------------
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [rawSearchTerm, setRawSearchTerm] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
   // -----------------------------
@@ -60,10 +61,17 @@ const ShareModel = ({ onClose, fileId, fileName }) => {
   useEffect(() => {
     resetShare();
     setSelectedUsers([]);
+    setRawSearchTerm("");
     setSearchTerm("");
     setCopied(false);
   }, [resetShare]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm(rawSearchTerm);
+    }, 300);
 
+    return () => clearTimeout(timer);
+  }, [rawSearchTerm]);
   // -----------------------------
   // Toggle selected user
   // -----------------------------
@@ -203,9 +211,9 @@ const ShareModel = ({ onClose, fileId, fileName }) => {
             <input
               type="email"
               placeholder="Enter user email"
-              value={searchTerm}
+              value={rawSearchTerm}
               onChange={(e) => {
-                setSearchTerm(e.target.value);
+                setRawSearchTerm(e.target.value);
                 setSelectedUsers([]);
               }}
               className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"

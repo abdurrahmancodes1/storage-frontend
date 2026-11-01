@@ -27,7 +27,6 @@ export default function UsersPage() {
   ] = useDeactivateUserMutation();
   const [changeUserRole, { isLoading: isChangingRole }] =
     useChangeUserRoleMutation();
-  console.log(users);
   const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserMutation();
 
   if (isLoading) return <Loader />;
