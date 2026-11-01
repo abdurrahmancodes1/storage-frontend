@@ -76,8 +76,8 @@ https://storvault.xyz
 
 ## Screenshots
 
-No dedicated screenshot assets were included in this repository, so this section is intentionally minimal.
+Will be added soon!
 
 ---
 
-StorVault’s frontend is designed to provide a clean user experience for cloud storage workflows, while the backend repository remains the authoritative technical reference for the full service architecture and deployment details.
+
