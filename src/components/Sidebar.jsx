@@ -28,6 +28,12 @@ export default function Sidebar({
 }) {
   const isOwnerView = activeTab === "files";
   const navigate = useNavigate();
+  const safeStorageUsed = Math.max(Number(storageUsed) || 0, 0);
+  const safeMaxStorage = Math.max(Number(maxStorage) || 0, 1);
+  const storagePercentage = Math.min(
+    Math.round((safeStorageUsed / safeMaxStorage) * 100),
+    100,
+  );
   return (
     <motion.aside
       initial={false}
@@ -113,16 +119,16 @@ export default function Sidebar({
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-slate-700">Storage</span>
           <span className="text-xs text-slate-500">
-            {Math.round((storageUsed / maxStorage) * 100)} %
+            {storagePercentage} %
           </span>
         </div>
         <ProgressBar
-          value={Math.round((storageUsed / maxStorage) * 100)}
+          value={storagePercentage}
           max={100}
           className="mb-2"
         />
         <p className="text-xs text-slate-500 mb-3">
-          {formatFileSize(storageUsed)} of {formatFileSize(maxStorage)}
+          {formatFileSize(safeStorageUsed)} of {formatFileSize(safeMaxStorage)}
         </p>
         <button
           onClick={() => navigate("/plans")}

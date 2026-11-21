@@ -7,6 +7,7 @@ import {
   ListIcon,
   Share2,
   Trash2,
+  X,
 } from "lucide-react";
 import React from "react";
 import ShareModel from "./ShareModel";
@@ -22,13 +23,14 @@ const Toolbar = ({
   openRenameModal,
   combinedItems,
   setShowInspector,
+  setSelection,
   setShowCreateDirModal,
   activeTab,
 }) => {
   return (
     <div className="h-12 border-b border-slate-100 flex items-center justify-between px-4 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
       <div className="flex items-center gap-1">
-        {activeTab === "files" && (
+        {activeTab === "files" && selection.length === 0 && (
           <Button
             variant="ghost"
             size="sm"
@@ -71,7 +73,7 @@ const Toolbar = ({
                 Rename
               </Button>
             )}
-            <Button
+            {selection.length === 1 && <Button
               variant="ghost"
               size="sm"
               className="text-slate-600"
@@ -82,15 +84,15 @@ const Toolbar = ({
               }}
             >
               <Download className="h-4 w-4 mr-2" /> Download
-            </Button>
-            <Button
+            </Button>}
+            {selection.length === 1 && <Button
               onClick={() => setShareModel(true)}
               variant="ghost"
               size="sm"
               className="text-slate-600"
             >
               <Share2 className="h-4 w-4 mr-2" /> Share
-            </Button>
+            </Button>}
 
             <Button
               variant="ghost"
@@ -99,6 +101,15 @@ const Toolbar = ({
               onClick={openDeleteModal}
             >
               <Trash2 className="h-4 w-4 mr-2" /> Delete
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-slate-500"
+              onClick={() => setSelection([])}
+              aria-label="Clear selection"
+            >
+              <X className="h-4 w-4 mr-2" /> Clear
             </Button>
           </>
         )}

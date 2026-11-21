@@ -15,7 +15,12 @@ export default function Sidebar({
   maxStorage,
   formatFileSize,
 }) {
-  const percentage = Math.round((storageUsed / maxStorage) * 100);
+  const safeStorageUsed = Math.max(Number(storageUsed) || 0, 0);
+  const safeMaxStorage = Math.max(Number(maxStorage) || 0, 1);
+  const percentage = Math.min(
+    Math.round((safeStorageUsed / safeMaxStorage) * 100),
+    100,
+  );
 
   const navItems = [
     { id: "files", icon: HardDrive, label: "My Files" },
@@ -94,7 +99,7 @@ export default function Sidebar({
         <ProgressBar value={percentage} max={100} className="mb-2" />
 
         <p className="text-xs text-slate-500 mb-3">
-          {formatFileSize(storageUsed)} of {formatFileSize(maxStorage)}
+          {formatFileSize(safeStorageUsed)} of {formatFileSize(safeMaxStorage)}
         </p>
 
         <button className="w-full py-1.5 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors">
