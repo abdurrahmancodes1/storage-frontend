@@ -421,7 +421,7 @@ export default function CloudDashboard() {
     if (!bytes && bytes !== 0) return "--";
     const units = ["B", "KB", "MB", "GB"];
     let i = 0;
-    let size = bytes;
+    let size = Math.max(Number(bytes) || 0, 0);
     while (size >= 1024 && i < units.length - 1) {
       size /= 1024;
       i++;
@@ -562,6 +562,7 @@ export default function CloudDashboard() {
           openRenameModal={openRenameModal}
           combinedItems={combinedItems}
           setShowInspector={setShowInspector}
+          setSelection={setSelection}
           setShowCreateDirModal={setShowCreateDirModal}
           activeTab={activeTab}
         />
@@ -591,6 +592,8 @@ export default function CloudDashboard() {
             setSelection={setSelection}
             activeTab={activeTab}
             sharedFiles={sharedFiles}
+            currentUser={user}
+            setShareModel={setShareModel}
           />
         )}
       </AnimatePresence>

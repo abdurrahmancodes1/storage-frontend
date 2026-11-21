@@ -164,7 +164,7 @@ const FileGrid = ({
                   : "border-slate-200 bg-white hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5",
                 viewMode === "list"
                   ? "flex items-center p-3 gap-4"
-                  : "p-4 flex flex-col aspect-[4/5] justify-between",
+                  : "p-3 flex flex-col aspect-[1/1.08] justify-between",
               )}
             >
               {/* Selection Checkbox */}
@@ -173,7 +173,7 @@ const FileGrid = ({
                   "absolute top-3 left-3 w-5 h-5 rounded border bg-white flex items-center justify-center transition-opacity",
                   selection.includes(file.id)
                     ? "opacity-100 border-blue-500 bg-blue-500"
-                    : "opacity-0 group-hover:opacity-100 border-slate-300",
+                    : "opacity-100 border-slate-300",
                 )}
               >
                 {selection.includes(file.id) && (

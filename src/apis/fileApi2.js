@@ -14,10 +14,17 @@ export const fileApi = createApi({
         },
       }),
     }),
+    getFileActivity: builder.query({
+      query: (id) => `/file/${id}/activity`,
+    }),
     getPublicFile: builder.query({
       query: (token) => `/share/${token}`,
     }),
   }),
 });
 
-export const { useGetFilePreviewQuery, useGetPublicFileQuery } = fileApi;
+export const {
+  useGetFilePreviewQuery,
+  useGetFileActivityQuery,
+  useGetPublicFileQuery,
+} = fileApi;
