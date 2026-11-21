@@ -132,6 +132,10 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/s/:slug",
+    element: <PublicSharePage />,
+  },
+  {
     path: "/share/:token",
     element: <PublicSharePage />,
   },

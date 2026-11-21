@@ -4,9 +4,10 @@ import FilePreviewViewer from "./FilePreviewViewer";
 import Loader from "./Loader";
 
 const PublicSharePage = () => {
-  const { token } = useParams();
+  const { token, slug } = useParams();
+  const publicIdentifier = slug || token;
 
-  const { data, isLoading, isError } = useGetPublicFileQuery(token);
+  const { data, isLoading, isError } = useGetPublicFileQuery(publicIdentifier);
 
   if (isLoading) {
     return <Loader />;
@@ -67,7 +68,7 @@ const PublicSharePage = () => {
           </div>
 
           <a
-            href={`${import.meta.env.VITE_BACKEND_BASE_URL}/share/${token}?action=download`}
+            href={`${import.meta.env.VITE_BACKEND_BASE_URL}/share/${publicIdentifier}?action=download`}
             className="flex shrink-0 items-center gap-2 rounded-xl bg-[#2563eb] px-5 py-3 font-medium text-white transition hover:bg-[#1d4ed8]"
           >
             Download
